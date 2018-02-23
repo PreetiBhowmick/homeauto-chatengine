@@ -1,4 +1,5 @@
 extras/
 watson-chatbot/.env
 watson-chatbot/parsecmd.js
+watson-chatbot/pnblock-with-credentials.js
 node_modules/

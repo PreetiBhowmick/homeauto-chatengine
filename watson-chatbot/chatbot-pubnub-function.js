@@ -5,17 +5,17 @@ function process(request) {
     const xhr = require('xhr');
     const pubnub = require('pubnub');
     //console.log(request.message);
-    /*
-      TODO: fill values
-    */
+  
 
     if (request.message.data.type == 'REQUEST')
     {
         console.log ("Request recd");
-
-        let watsonUsername = '3e2c5d18-2d9d-49ba-ac6f-79f965f3af65';
-        let watsonPassword = 'A0XPOAe7VB8T';
-        let workspaceId = '0090b543-11b3-4909-a018-9f31d985a813';
+      /*
+        TODO: fill values
+      */
+        let watsonUsername = 'WATSON_CONVERSATION_USERNAME';
+        let watsonPassword = 'WATSON_CONVERSATION_PASSWORD';
+        let workspaceId = 'WATSON_CONVERSATION_WORKSPACE_ID';
         let senderName = 'PubNub Bot';
         /*
           TODO: end fill values
@@ -62,13 +62,13 @@ function process(request) {
             .then(response => {
                 return response.json()
                   .then(parsedResponse => {
-                      request.message.sender = senderName;
+                      //request.message.sender = senderName;
                         //console.log(parsedResponse);
                       if (parsedResponse.output.text.length > 0) {
                           
                           
-                          
-                          request.message.data.text = parsedResponse.output.text[0];
+                          request.message.data.requested_text = request.message.data.text
+                          //request.message.data.text = parsedResponse.output.text[0];
                           request.message.data.type = 'COMMAND';
                           request.message.data.intent = parsedResponse.intents[0].intent;
                           request.message.data.entity = parsedResponse.entities[0].value;
@@ -105,13 +105,8 @@ function process(request) {
 
     else
 
-    {
-
-      //pubnub.publish({
-        //channel: request.message.channel,
-       // message: "Not my domain"
-      //});
-
+    {   
+       
        return request.ok();
 
     }
