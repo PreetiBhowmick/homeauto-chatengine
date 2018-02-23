@@ -1,0 +1,515 @@
+{
+	
+	"homeauto_intents": 
+	[
+		{
+			"intent":"turnOFF",
+			"examples":
+			[
+				{"text":"Put off"},
+				{"text":"Switch off"},
+				{"text":"Turn off"}
+			],
+			"description":"Turn on intents"
+		},
+
+		{
+			"intent":"turnON",
+			"examples":
+			[
+				{"text":"Put on"},
+				{"text":"Switch on"},
+				{"text":"Turn on"}
+			],
+			"description":"Turn off intents"
+		}
+	],
+
+	"homeauto_entities":
+	[
+		{
+			"entity":"room",
+			"values":
+			[
+				{
+					"type":"synonyms",
+					"value":"kitchen light",
+					"metadata":null,
+					"synonyms":[]
+				},
+				{
+					"type":"synonyms",
+					"value":"Living room light",
+					"metadata":null,
+					"synonyms":[]
+				},
+
+				{
+					"type":"synonyms",
+					"value":"Portico light",
+					"metadata":null,
+					"synonyms":[]
+				},
+
+				{
+					"type":"synonyms",
+					"value":"Bedroom light",
+					"metadata":null,
+					"synonyms":[]
+				},
+
+				{
+					"type":"synonyms",
+					"value":"Children Room light",
+					"metadata":null,
+					"synonyms":[]
+				}
+			],
+			"metadata":null,
+			"description":null
+		}
+	],
+
+	"homeauto_dialog_nodes":
+	[
+	
+		{
+			"type":"standard",
+			"title":"Invalid gadget to switch off",
+			"output":
+			{
+				"text":
+				{
+					"values":
+					[
+						"Please tell me which light to turn off",
+						"What should I turn off?"
+					],
+					"selection_policy":"sequential"
+				}
+			},
+			"parent":"turnOffNode",
+			"context":null,
+			"metadata":{},
+			"next_step":
+			{
+				"behavior":"jump_to","selector":"user_input","dialog_node":"gadgetToSwitchOFF"
+			},
+			"conditions":"anything_else",
+			"description":null,
+			"dialog_node":"invalid_switchoff_gadget",
+			"previous_sibling":"tooManyEntitiesToSwitchOFF"
+		},
+			
+		{
+			"type":"standard",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":
+					[
+						"I can only perform one operation at a time. What would you like me to do?"
+					],
+					"selection_policy":"sequential"
+				}
+			},
+			"parent":"turnOffNode",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"entities.size()>1",
+			"description":null,
+			"dialog_node":"tooManyEntitiesToSwitchOFF",
+			"previous_sibling":"gadgetToSwitchOFF"
+		},
+
+		{
+			"type":"standard",
+			"title":"Gadget node",
+			"output":{},
+			"parent":"turnOffNode",
+			"context":null,
+			"metadata":
+			{
+				"_customization":{"mcr":true}
+			},
+			"next_step":null,
+			"conditions":"@room",
+			"description":null,
+			"dialog_node":"gadgetToSwitchOFF",
+			"previous_sibling":null
+		},
+
+		{
+			"type":"standard",
+			"title":"Invalid gadget",
+			"output":
+			{
+				"text":
+				{
+					"values":
+					[
+						"Please tell me which light to turn on",
+						"What should I turn on?"
+					],
+				"selection_policy":"sequential"
+				}
+			},
+			"parent":"turn-on",
+			"context":null,
+			"metadata":{},
+			"next_step":
+			{
+				"behavior":"jump_to",
+				"selector":"user_input",
+				"dialog_node":"gadgetToSwitchON"
+			},
+			"conditions":"anything_else",
+			"description":null,
+			"dialog_node":"invalid_switchon_gadget",
+			"previous_sibling":"tooManyEntitiesToSwitchON"
+		},
+
+
+		{
+			"type":"standard",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":
+					[
+						"I can only perform one operation at a time. What would you like me to do?"
+					],
+					"selection_policy":"sequential"
+				}
+			},
+			"parent":"turn-on",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"entities.size()>1",
+			"description":null,
+			"dialog_node":"tooManyEntitiesToSwitchON",
+			"previous_sibling":"gadgetToSwitchON"
+		},
+
+
+		{
+			"type":"standard",
+			"title":"Gadget node",
+			"output":{},
+			"parent":"turn-on",
+			"context":null,
+			"metadata":
+			{
+				"_customization":{"mcr":true}
+			},
+			"next_step":null,
+			"conditions":"@room",
+			"description":null,
+			"dialog_node":"gadgetToSwitchON",
+			"digress_out":"allow_all",
+			"previous_sibling":null
+		},
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":
+					[
+						"Sure I am turning on @room"
+					]
+				}
+			},
+			"parent":"gadgetToSwitchON",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Portico light)",
+			"description":null,
+			"dialog_node":"portico_switch_ON",
+			"previous_sibling":"living_room_switch_ON"
+		},
+
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":
+					["Sure I am turning on @room"]
+				}
+			},
+			"parent":"gadgetToSwitchON",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Children Room light)",
+			"description":null,
+			"dialog_node":"children_room_switch_ON",
+			"previous_sibling":"bedroom_switch_ON"
+		},
+
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":["Sure I am turning on @room"]
+				}
+			},
+			"parent":"gadgetToSwitchON",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Living room light)",
+			"description":null,
+			"dialog_node":"living_room_switch_ON",
+			"previous_sibling":"kitchen_switch_ON"
+		},
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":
+					[
+						"Sure I am turning on @room"
+					]
+				}
+			},
+			"parent":"gadgetToSwitchON",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Bedroom light)",
+			"description":null,
+			"dialog_node":"bedroom_switch_ON",
+			"previous_sibling":"portico_switch_ON"
+		},
+		
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":["Sure I am turning on @room"],
+					"selection_policy":"sequential"
+				}
+			},
+			"parent":"gadgetToSwitchON",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(kitchen light)",
+			"description":null,
+			"dialog_node":"kitchen_switch_ON",
+			"previous_sibling":null
+		},
+
+		
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":["Sure I am turning off @room"]
+				}
+			},
+			"parent":"gadgetToSwitchOFF",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Portico light)",
+			"description":null,
+			"dialog_node":"portico_switch_OFF",
+			"previous_sibling":"living_room_switch_OFF"
+		},
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":["Sure I am turning off @room"]
+				}
+			},
+			"parent":"gadgetToSwitchOFF",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Living room light)",
+			"description":null,
+			"dialog_node":"living_room_switch_OFF",
+			"previous_sibling":"kitchen_switch_OFF"
+		},
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":["Sure I am turning off @room"]
+				}
+			},
+			"parent":"gadgetToSwitchOFF",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Bedroom light)",
+			"description":null,
+			"dialog_node":"bedroom_switch_OFF",
+			"previous_sibling":"portico_switch_OFF"
+		},
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":["Sure I am turning off @room"]
+				}
+			},
+			"parent":"gadgetToSwitchOFF",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(Children Room light)",
+			"description":null,
+			"dialog_node":"children_room_switch_OFF",
+			"previous_sibling":"bedroom_switch_OFF"
+		},
+
+
+		{
+			"type":"response_condition",
+			"title":null,
+			"output":
+			{
+				"text":
+				{
+					"values":["Sure I am turning off @room"],
+					"selection_policy":"sequential"
+				}
+			},
+			"parent":"gadgetToSwitchOFF",
+			"context":null,
+			"metadata":{},
+			"next_step":null,
+			"conditions":"@room:(kitchen light)",
+			"description":null,
+			"dialog_node":"kitchen_switch_OFF",
+			"previous_sibling":null
+		},
+
+		{
+			"type":"standard",
+			"title":"Turn on dialog node",
+			"output":
+			{
+				"text":
+				{
+				"values":[],
+				"selection_policy":"sequential"
+				}
+			},
+			"parent":null,
+			"context":{},
+			"metadata":{},
+			"next_step":
+			{
+				"behavior":"jump_to",
+				"selector":"condition",
+				"dialog_node":"gadgetToSwitchON"
+			},
+			"conditions":"#turnON",
+			"description":"Turn ON node",
+			"dialog_node":"turn-on",
+			"previous_sibling":"conversation-start"
+		},
+
+		{
+			"type":"standard",
+			"title":"Turn off dialog node",
+			"output":
+			{
+				"text":
+				{
+				"values":[],"selection_policy":"sequential"
+				}
+			},
+			"parent":null,
+			"context":{},
+			"metadata":{},
+			"next_step":
+			{
+				"behavior":"jump_to",
+				"selector":"condition",
+				"dialog_node":"gadgetToSwitchOFF"
+			},
+			"conditions":"#turnOFF",
+			"description":"Turn OFF node",
+			"dialog_node":"turnOffNode",
+			"previous_sibling":"turn-on"
+		},
+
+		{
+			"type":"standard",
+			"title":"Welcome greeting",
+			"output":
+			{
+				"text":
+				{
+					"values":
+					[
+						"Welcome to Home automation demno",
+						"How can I help you with automating?"
+					],
+					"selection_policy":"random"
+				}
+			},
+			"parent":null,
+			"context":{},
+			"metadata":{},
+			"next_step":
+			{
+				"behavior":"get_user_input"
+			},
+			"conditions":"welcome",
+			"description":"Welcome node",
+			"dialog_node":"conversation-start",
+			"previous_sibling":null
+		}	
+		
+	]
+}
+
+
