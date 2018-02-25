@@ -18,6 +18,7 @@ var conversation = new watson.ConversationV1({
 
 var workspace_id = "";
 
+/*
 conversation.listWorkspaces(function(err, response) {
   if (err) {
     console.error(err);
@@ -26,7 +27,7 @@ conversation.listWorkspaces(function(err, response) {
     //console.log(JSON.stringify(response, null, 2));
   }
  });
-
+*/
 
 var workspace = {
   name: 'Home automation chatbot',

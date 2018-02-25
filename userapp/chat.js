@@ -1,7 +1,12 @@
+
+pubnub_pub_key = 'YOUR_PUBNUB_PUBLISH_KEY';
+pubnub_sub_key = 'YOUR_PUBNUB_SUBSCRIBE_KEY' 
+
+
 // create a new instance of ChatEngine
 ChatEngine = ChatEngineCore.create({
-    publishKey: 'pub-c-8125218a-207d-4859-a7f0-07eb7a390f8a',
-    subscribeKey: 'sub-c-c6d8f1ba-04de-11e8-91aa-36923a88c219'
+    publishKey: pubnub_pub_key,
+    subscribeKey: pubnub_sub_key
 });
 
 
